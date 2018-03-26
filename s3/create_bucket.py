@@ -7,22 +7,21 @@ Created on Mar 26, 2018
 import boto3
 import random
 import string
-import datetime
+import logging
 
-
-
+logging.basicConfig(format='%(asctime)s %(message)s',level=logging.DEBUG)
 
 if __name__ == '__main__':
     rand_str = lambda n: ''.join([random.choice(string.lowercase) for i in xrange(n)])
     s = rand_str(10) + "-temp"
-    print ("%s: Starting" % datetime.datetime.utcnow())
-    print ("%s: opening session" % datetime.datetime.utcnow())
+    logging.info("Starting - bucket name: " + s)
+    logging.info("opening session")
     session = boto3.Session(profile_name='default')
-    print ("%s: getting s3 resource" % datetime.datetime.utcnow())
+    logging.info("getting s3 resource")
     s3 = session.resource('s3')
-    print ("%s: creating bucket" % datetime.datetime.utcnow())
+    logging.info("creating bucket")
     s3.create_bucket(Bucket = s)
-    print ("%s: deleting bucket" % datetime.datetime.utcnow())
+    logging.info("deleting bucket")
     bucket = s3.Bucket(s)
     bucket.delete();
-    print ("%s: finished" % datetime.datetime.utcnow())
+    logging.info("finished")
